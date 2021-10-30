@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home page</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="index_style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+	<!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"-->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+	<style>
+		ul{
+			background-color: #eee;
+			cursor: pointer;
+			color: black;
+			list-style:none;
+		   }
+			li{
+				padding: 10px;
+			}
+			
+	</style>
+</head>
+<body>
+    <header>
+	    <nav>
+		
+		    <div class="home clearfix animated slideInDown">
+			<ul class="main-nav animated slideInDown">
+				
+			<li><a href="login.php">Sign in</a></li>
+			    <li><a href="receiptionist.html">Admin</a></li>
+			    <li><a href="productchoice.php">Patient</a></li>
+				<li><a href="#">About Us</a></li>
+				<li><a href="#">Contact Info</a></li>
+
+			</ul>
+
+			</div>
+		</nav>
+		
+
+		<div class="search-box">
+			
+        <form action="do_login.php" method = "POST">
+    
+      <input type="text" id="search" placeholder="Search.." name="search">
+      <div id="search_option"></div>
+      <!--button id="submit" type="submit">Search</button-->
+      <input id="submit" type = "submit" value = "Search" >
+      <p class="form-message"></p>
+    </form>
+  </div>
+	</header>
+	<script>
+	$(document).ready(function(){
+		$('#search').keyup(function(){
+			//event.preventDefault();
+			var s = $(this).val();
+			if(s != '')
+			{
+				$.ajax({
+					url:"search.php",
+					method:"POST",
+					data:{s:s},
+					success:function(data)
+					{
+						$('#search_option').fadeIn();
+						$('#search_option').html(data);
+
+					}
+
+				});
+			}else{
+				$('#search_option').fadeOut();
+				$('#search_option').html("");
+			}
+		});
+
+		$(document).on('click','li',function(){
+			$('#search').val($(this).text());
+			$('#search_option').fadeOut();
+		});
+
+		$("form").submit(function(event){
+			event.preventDefault();
+			var uname=$("#search").val();
+			var submit=$("#submit").val();
+			$(".form-message").load("doctor_list.php",{
+				a:1,
+				uname:uname,				
+				submit:submit
+			});
+		});
+		});	
+
+	
+	</script>
+	
+<footer>
+<h5><p>Copyright © 1999-2020 W3Schools.com</p></h5>
+</footer>
+</body>
+</html>
